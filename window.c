@@ -267,36 +267,42 @@ static void draw(void) {
    * GL4Dummies */
   gl4duSendMatrices();
   
+static int t = 0;
+t++;
+if (t%10 == 9 ){
+  GLfloat hauteur_pointe = 1 + randomFloat(-0.5, 1.);
+  GLfloat etage_3_x       = 0.5 ,                               etage_3_y       = 0.5 ,                               etage_3_z        = -3;
+  GLfloat decal =  hauteur_pointe - etage_3_z  ;
   
-  GLfloat hauteur_pointe = 1 ;
-  GLfloat bas_pyramide_x = 1+ randomFloat(-0.5, 0.5), bas_pyramide_y = 1+ randomFloat(-0.5, 0.5), bas_pyramide_z = 0;
-  GLfloat etage_1_x = 2 + randomFloat(-0.5, 0.5), etage_1_y = 2 + randomFloat(-0.5, 0.5), etage_1_z = -1;
-  GLfloat etage_2_x = 2.5 + randomFloat(-0.5, 0.5), etage_2_y = 2.5 + randomFloat(-0.5, 0.5), etage_2_z = -2;
-  GLfloat etage_3_x = 2 , etage_3_y = 2 , etage_3_z = -3;
+
+  GLfloat bas_pyramide_x  = 0.5  ,     bas_pyramide_y  = 0.5  ,                                                       bas_pyramide_z   = 0;
+  GLfloat etage_1_x       = 1   + randomFloat(-0.25, 0.25),     etage_1_y       = 1   + randomFloat(-0.25, 0.5),      etage_1_z        = -1;
+  GLfloat etage_2_x       = 1. + randomFloat(-0.25, 0.25),     etage_2_y       = 1. + randomFloat(-0.25, 0.5),        etage_2_z        = -2;
+
   
   
   GLfloat updatedData[] = {
 0,0,hauteur_pointe,                                   1,1,1,  1,0,
 
--bas_pyramide_x, bas_pyramide_y, bas_pyramide_z,      1,1,1,  1,0,
- bas_pyramide_x, bas_pyramide_y, bas_pyramide_z,      1,1,1,  1,1,
- bas_pyramide_x,-bas_pyramide_y, bas_pyramide_z,      1,1,1,  1,0,
--bas_pyramide_x,-bas_pyramide_y, bas_pyramide_z,      1,1,1,  1,1,
+-bas_pyramide_x + randomFloat(-0.25, 0.25), bas_pyramide_y + randomFloat(-0.25, 0.25), bas_pyramide_z,      1,1,0,  1,0,
+ bas_pyramide_x + randomFloat(-0.25, 0.25), bas_pyramide_y + randomFloat(-0.25, 0.25), bas_pyramide_z,      1,1,0,  1,0,
+ bas_pyramide_x + randomFloat(-0.25, 0.25),-bas_pyramide_y + randomFloat(-0.25, 0.25), bas_pyramide_z,      1,1,0,  1,0,
+-bas_pyramide_x + randomFloat(-0.25, 0.25),-bas_pyramide_y + randomFloat(-0.25, 0.25), bas_pyramide_z,      1,1,0,  1,0,
 
--etage_1_x,-etage_1_y, etage_1_z,                     1,1,1,  1,0,
--etage_1_x, etage_1_y, etage_1_z,                     1,1,1,  1,1,   
- etage_1_x, etage_1_y, etage_1_z,                     1,1,1,  1,0,
- etage_1_x,-etage_1_y, etage_1_z,                     1,1,1,  1,1,
+-etage_1_x + randomFloat(-0.25, 0.25),-etage_1_y + randomFloat(-0.25, 0.25), etage_1_z,                     1,0.5,0,  1,0,
+-etage_1_x + randomFloat(-0.25, 0.25), etage_1_y + randomFloat(-0.25, 0.25), etage_1_z,                     1,0.5,0,  1,0,   
+ etage_1_x + randomFloat(-0.25, 0.25), etage_1_y + randomFloat(-0.25, 0.25), etage_1_z,                     1,0.5,0,  1,0,
+ etage_1_x + randomFloat(-0.25, 0.25),-etage_1_y + randomFloat(-0.25, 0.25), etage_1_z,                     1,0.5,0,  1,0,
 
- etage_2_x ,-etage_2_y , etage_2_z,                   1,1,1,  1,0,
--etage_2_x ,-etage_2_y , etage_2_z,                   1,1,1,  1,1,
--etage_2_x , etage_2_y , etage_2_z,                   1,1,1,  1,0,
- etage_2_x , etage_2_y , etage_2_z,                   1,1,1,  1,1,
+ etage_2_x + randomFloat(-0.25, 0.25),-etage_2_y + randomFloat(-0.25, 0.25), etage_2_z,                     1,0,0,  1,0,
+-etage_2_x + randomFloat(-0.25, 0.25),-etage_2_y + randomFloat(-0.25, 0.25), etage_2_z,                     1,0,0,  1,0,
+-etage_2_x + randomFloat(-0.25, 0.25), etage_2_y + randomFloat(-0.25, 0.25), etage_2_z,                     1,0,0,  1,0,
+ etage_2_x + randomFloat(-0.25, 0.25), etage_2_y + randomFloat(-0.25, 0.25), etage_2_z,                     1,0,0,  1,0,
 
- etage_3_x, etage_3_y, etage_3_z,                     1,1,1,  1,0,
- etage_3_x,-etage_3_y, etage_3_z,                     1,1,1,  1,1,
--etage_3_x,-etage_3_y, etage_3_z,                     1,1,1,  1,0,
--etage_3_x, etage_3_y, etage_3_z,                     1,1,1,  1,1,
+ etage_3_x, etage_3_y, etage_3_z,                     1,0,0,  1,0,
+ etage_3_x,-etage_3_y, etage_3_z,                     1,0,0,  1,0,
+-etage_3_x,-etage_3_y, etage_3_z,                     1,0,0,  1,0,
+-etage_3_x, etage_3_y, etage_3_z,                     1,0,0,  1,0,
 
 };
 
@@ -304,7 +310,7 @@ static void draw(void) {
   glBindBuffer(GL_ARRAY_BUFFER, _buffer[0]);
   glBufferData(GL_ARRAY_BUFFER, sizeof(updatedData), updatedData, GL_STATIC_DRAW);
 
-
+}
   /* activer l'étage de textures 0, plusieurs étages sont disponibles,
    * nous pouvons lier une texture par type et par étage */
   glActiveTexture(GL_TEXTURE0);

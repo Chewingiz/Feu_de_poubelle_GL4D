@@ -94,6 +94,12 @@ GLuint idata[] = {
 14, 13, 12,
 12, 9, 14,
 
+14, 17, 18,
+18,19,14,
+14,19,20,
+20,21,14,
+14,21,17,
+
 
 /*
 5,6,1,
@@ -257,7 +263,7 @@ static void draw(void) {
    * modèle. Soit composer la matrice courante avec une rotation
    * "angle" autour de l'axe y (0, 1, 0) */
   gl4duRotatef(angle, 0, 1, 0);
-  gl4duRotatef( -90, 1, 0, 0);
+  gl4duRotatef( 90, 1, 0, 0);
   /* on incrémente angle d'un 1/60 de 1/4 de tour soit (360° x 1/60). Tester
    * l'application en activant/désactivant la synchronisation
    * verticale de votre carte graphique. Que se passe-t-il ? Trouver
@@ -270,39 +276,46 @@ static void draw(void) {
 static int t = 0;
 t++;
 if (t%10 == 9 ){
-  GLfloat hauteur_pointe = 1 + randomFloat(-0.5, 1.);
-  GLfloat etage_3_x       = 0.5 ,                               etage_3_y       = 0.5 ,                               etage_3_z        = -3;
+  GLfloat hauteur_pointe = 0;
+  GLfloat etage_3_x       = 0 ,                               etage_3_y       = 0 ,                               etage_3_z        = -3;
   GLfloat decal =  hauteur_pointe - etage_3_z  ;
   
 
-  GLfloat bas_pyramide_x  = 0.5  ,     bas_pyramide_y  = 0.5  ,                                                       bas_pyramide_z   = 0;
-  GLfloat etage_1_x       = 1   + randomFloat(-0.25, 0.25),     etage_1_y       = 1   + randomFloat(-0.25, 0.5),      etage_1_z        = -1;
-  GLfloat etage_2_x       = 1. + randomFloat(-0.25, 0.25),     etage_2_y       = 1. + randomFloat(-0.25, 0.5),        etage_2_z        = -2;
+  GLfloat bas_pyramide_x  = 1  ,     bas_pyramide_y  = 1 ,                                                       bas_pyramide_z   = 0;
+  GLfloat etage_1_x       = 1.3,     etage_1_y       = 1.3,      etage_1_z        = -1;
+  GLfloat etage_2_x       = 1 ,     etage_2_y       = 1,        etage_2_z        = -2;
+  GLfloat noeud = 0.5;
 
   
   
   GLfloat updatedData[] = {
 0,0,hauteur_pointe,                                   1,1,1,  1,0,
 
--bas_pyramide_x + randomFloat(-0.25, 0.25), bas_pyramide_y + randomFloat(-0.25, 0.25), bas_pyramide_z,      1,1,0,  1,0,
- bas_pyramide_x + randomFloat(-0.25, 0.25), bas_pyramide_y + randomFloat(-0.25, 0.25), bas_pyramide_z,      1,1,0,  1,0,
- bas_pyramide_x + randomFloat(-0.25, 0.25),-bas_pyramide_y + randomFloat(-0.25, 0.25), bas_pyramide_z,      1,1,0,  1,0,
--bas_pyramide_x + randomFloat(-0.25, 0.25),-bas_pyramide_y + randomFloat(-0.25, 0.25), bas_pyramide_z,      1,1,0,  1,0,
+-bas_pyramide_x, bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
+ bas_pyramide_x, bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
+ bas_pyramide_x,-bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
+-bas_pyramide_x,-bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
 
--etage_1_x + randomFloat(-0.25, 0.25),-etage_1_y + randomFloat(-0.25, 0.25), etage_1_z,                     1,0.5,0,  1,0,
--etage_1_x + randomFloat(-0.25, 0.25), etage_1_y + randomFloat(-0.25, 0.25), etage_1_z,                     1,0.5,0,  1,0,   
- etage_1_x + randomFloat(-0.25, 0.25), etage_1_y + randomFloat(-0.25, 0.25), etage_1_z,                     1,0.5,0,  1,0,
- etage_1_x + randomFloat(-0.25, 0.25),-etage_1_y + randomFloat(-0.25, 0.25), etage_1_z,                     1,0.5,0,  1,0,
+-etage_1_x ,-etage_1_y , etage_1_z,                     0,0,0,  1,0,
+-etage_1_x , etage_1_y , etage_1_z,                     0,0,0,  1,0,   
+ etage_1_x , etage_1_y , etage_1_z,                     0,0,0,  1,0,
+ etage_1_x ,-etage_1_y , etage_1_z,                     0,0,0,  1,0,
 
- etage_2_x + randomFloat(-0.25, 0.25),-etage_2_y + randomFloat(-0.25, 0.25), etage_2_z,                     1,0,0,  1,0,
--etage_2_x + randomFloat(-0.25, 0.25),-etage_2_y + randomFloat(-0.25, 0.25), etage_2_z,                     1,0,0,  1,0,
--etage_2_x + randomFloat(-0.25, 0.25), etage_2_y + randomFloat(-0.25, 0.25), etage_2_z,                     1,0,0,  1,0,
- etage_2_x + randomFloat(-0.25, 0.25), etage_2_y + randomFloat(-0.25, 0.25), etage_2_z,                     1,0,0,  1,0,
+ etage_2_x ,-etage_2_y , etage_2_z,                     0,0,0,  1,0,
+-etage_2_x ,-etage_2_y , etage_2_z,                     0,0,0,  1,0,
+-etage_2_x , etage_2_y , etage_2_z,                     0,0,0,  1,0,
+ etage_2_x , etage_2_y , etage_2_z,                     0,0,0,  1,0,
 
- etage_3_x, etage_3_y, etage_3_z,                     1,0,0,  1,0,
- etage_3_x,-etage_3_y, etage_3_z,                     1,0,0,  1,0,
--etage_3_x,-etage_3_y, etage_3_z,                     1,0,0,  1,0,
--etage_3_x, etage_3_y, etage_3_z,                     1,0,0,  1,0,
+ etage_3_x, etage_3_y, etage_3_z,                     0,0,0,  1,0,
+ etage_3_x,-etage_3_y, etage_3_z,                     0,0,0,  1,0,
+-etage_3_x,-etage_3_y, etage_3_z,                     0,0,0,  1,0,
+-etage_3_x, etage_3_y, etage_3_z,                     0,0,0,  1,0,
+
+ noeud , noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
+ noeud ,-noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
+-noeud ,-noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
+-noeud , noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
+-noeud , noeud -0.2,  etage_3_z  - 0.5,                     0,0,0,  1,0,
 
 };
 
@@ -330,7 +343,7 @@ if (t%10 == 9 ){
    *
    * Attention ! Maintenant nous dessinons avec DrawElement qui
    * utilise les indices des sommets poassés pour mailler */
-  glDrawElements(GL_TRIANGLE_STRIP, 36 + 24+ 24, GL_UNSIGNED_INT, (const GLvoid *)0);
+  glDrawElements(GL_TRIANGLE_STRIP, 36 + 24+ 24 +15, GL_UNSIGNED_INT, (const GLvoid *)0);
   /* dé-lier le VAO */
   glBindVertexArray(0);
   /* désactiver le programme shader */

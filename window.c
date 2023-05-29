@@ -46,11 +46,12 @@ static void init(void) {
    
 
 GLuint idata[] = {
-   0, 1, 2,
-    0, 2, 3,
-    0, 3, 4,
-    0, 4, 1,
+0, 1, 2,
+0, 2, 3,
+0, 3, 4,
+0, 4, 1,
 
+/*1*/
 1,2,7,
 7,6,1,
 
@@ -63,12 +64,12 @@ GLuint idata[] = {
 8,7,2,
 2,3,8,
 
-
+/*2*/
 8,5,10,
 10,9,8,
 
 8,9,7,
-7,8,12,
+7,9,12,
 
 12,7,6,
 6,12,11,
@@ -76,6 +77,19 @@ GLuint idata[] = {
 11,10,5,
 5,6,11,
 
+/*3*/
+
+11, 12, 13,
+13, 16, 11,
+
+11, 16, 10,
+10, 16, 15,
+
+15, 10, 9,
+9,15,14,
+
+14, 13, 12,
+12, 9, 14,
 
 
 /*
@@ -110,7 +124,10 @@ GLfloat data[] = {
 -1,1,-2,1, 1, 1,  1,  1,
 1,1,-2,1, 1, 1,  1,  0,
 
-
+2,2,-3,1, 1, 1,  1,  1,
+2,-2,-3,1, 1, 1,  1,  0,
+-2,-2,-3,1, 1, 1,  1,  1,
+-2,2,-3,1, 1, 1,  1,  0,
 
 
 };
@@ -211,7 +228,7 @@ static void draw(void) {
   /* Composer la matrice vue courante en simulant une "caméra" à
    * l'aide de la fonction LookAt(xyz_position_cam,
    * xyz_ou_elle_regarde, xyz_son_vecteur_haut) */
-  gl4duLookAtf(0, 0, 5, 0, 0, 0, 0, 1, 0);
+  gl4duLookAtf(0, 1, 10, 0, 0, 0, 0, 1, 0);
   /* lier (mettre en avant ou "courante") la matrice modèle créée dans
    * init */
   gl4duBindMatrix("modelMatrix");
@@ -234,7 +251,7 @@ static void draw(void) {
   
   
   
-  GLfloat data[] = {
+  GLfloat updatedData[] = {
 0,0,1, 1, 1, 1,  1,  1,
 
 -1,1,0,1, 1, 1,  1,  0,
@@ -242,7 +259,7 @@ static void draw(void) {
 1,-1,0,1, 1, 1,  1,  0,
 -1,-1,0,1, 1, 1,  1,  1,
 
--2,-5,-1,1, 1, 1,  1,  1,
+-2,-2,-1,1, 1, 1,  1,  1,
 -2,2,-1,1, 1, 1,  1,  0,
 2,2,-1,1, 1, 1,  1,  1,
 2,-2,-1,1, 1, 1,  1,  0,
@@ -252,7 +269,17 @@ static void draw(void) {
 -1,1,-2,1, 1, 1,  1,  1,
 1,1,-2,1, 1, 1,  1,  0,
 
+2,2,-3,1, 1, 1,  1,  1,
+2,-2,-3,1, 1, 1,  1,  0,
+-2,-2,-3,1, 1, 1,  1,  1,
+-2,2,-3,1, 1, 1,  1,  0,
+
+
 };
+
+
+  glBindBuffer(GL_ARRAY_BUFFER, _buffer[0]);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(updatedData), updatedData, GL_STATIC_DRAW);
 
 
   /* activer l'étage de textures 0, plusieurs étages sont disponibles,
@@ -274,7 +301,7 @@ static void draw(void) {
    *
    * Attention ! Maintenant nous dessinons avec DrawElement qui
    * utilise les indices des sommets poassés pour mailler */
-  glDrawElements(GL_TRIANGLE_STRIP, 36 + 24, GL_UNSIGNED_INT, (const GLvoid *)0);
+  glDrawElements(GL_TRIANGLE_STRIP, 36 + 24+ 24, GL_UNSIGNED_INT, (const GLvoid *)0);
   /* dé-lier le VAO */
   glBindVertexArray(0);
   /* désactiver le programme shader */

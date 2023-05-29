@@ -8,6 +8,9 @@
 #include <GL4D/gl4du.h>
 #include <GL4D/gl4dp.h>
 #include <GL4D/gl4duw_SDL2.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 /* Prototypes des fonctions statiques contenues dans ce fichier C */
 static void init(void);
@@ -205,6 +208,8 @@ GLfloat data[] = {
   gl4duFrustumf(-1, 1, -1, 1, 2, 100);
   /* dans quelle partie de l'écran on effectue le rendu */
   glViewport(0, 0, _wW, _wH);
+  srand(time(NULL));
+
 }
 /*!\brief Cette fonction dessine dans le contexte OpenGL actif. */
 static void draw(void) {
@@ -263,20 +268,20 @@ static void draw(void) {
  bas_pyramide_x,-bas_pyramide_y, bas_pyramide_z,      1,1,1,  1,0,
 -bas_pyramide_x,-bas_pyramide_y, bas_pyramide_z,      1,1,1,  1,1,
 
--etage_1_x,-etage_1_y, etage_1_z,                     1,1,1,  1,0
--etage_1_x, etage_1_y, etage_1_z,                     1,1,1,  1,1   
- etage_1_x, etage_1_y, etage_1_z,                     1,1,1,  1,0
- etage_1_x,-etage_1_y, etage_1_z,                     1,1,1,  1,1
+-etage_1_x,-etage_1_y, etage_1_z,                     1,1,1,  1,0,
+-etage_1_x, etage_1_y, etage_1_z,                     1,1,1,  1,1,   
+ etage_1_x, etage_1_y, etage_1_z,                     1,1,1,  1,0,
+ etage_1_x,-etage_1_y, etage_1_z,                     1,1,1,  1,1,
 
- etage_2_x ,-etage_2_y , etage_2_z,                   1,1,1,  1,0
--etage_2_x ,-etage_2_y , etage_2_z,                   1,1,1,  1,1
--etage_2_x , etage_2_y , etage_2_z,                   1,1,1,  1,0
- etage_2_x , etage_2_y , etage_2_z,                   1,1,1,  1,1
+ etage_2_x ,-etage_2_y , etage_2_z,                   1,1,1,  1,0,
+-etage_2_x ,-etage_2_y , etage_2_z,                   1,1,1,  1,1,
+-etage_2_x , etage_2_y , etage_2_z,                   1,1,1,  1,0,
+ etage_2_x , etage_2_y , etage_2_z,                   1,1,1,  1,1,
 
- etage_3_x, etage_3_y, etage_3_z,                     1,1,1,  1,0
- etage_3_x,-etage_3_y, etage_3_z,                     1,1,1,  1,1
--etage_3_x,-etage_3_y, etage_3_z,                     1,1,1,  1,0
--etage_3_x, etage_3_y, etage_3_z,                     1,1,1,  1,1
+ etage_3_x, etage_3_y, etage_3_z,                     1,1,1,  1,0,
+ etage_3_x,-etage_3_y, etage_3_z,                     1,1,1,  1,1,
+-etage_3_x,-etage_3_y, etage_3_z,                     1,1,1,  1,0,
+-etage_3_x, etage_3_y, etage_3_z,                     1,1,1,  1,1,
 
 };
 

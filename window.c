@@ -248,32 +248,35 @@ static void draw(void) {
   gl4duSendMatrices();
   
   
-  
+  GLfloat hauteur_pointe = 1;
+  GLfloat bas_pyramide_x = 1, bas_pyramide_y = 1, bas_pyramide_z = 0;
+  GLfloat etage_1_x = 2, etage_1_y = 2, etage_1_z = -1;
+  GLfloat etage_2_x = 1, etage_2_y = 1, etage_2_z = -2;
+  GLfloat etage_3_x = 2, etage_3_y = 2, etage_3_z = -3;
   
   
   GLfloat updatedData[] = {
-0,0,1, 1, 1, 1,  1,  1,
+0,0,hauteur_pointe,                                   1,1,1,  1,0,
 
--1,1,0,1, 1, 1,  1,  0,
-1,1,0,1, 1, 1,  1,  1,
-1,-1,0,1, 1, 1,  1,  0,
--1,-1,0,1, 1, 1,  1,  1,
+-bas_pyramide_x, bas_pyramide_y, bas_pyramide_z,      1,1,1,  1,0,
+ bas_pyramide_x, bas_pyramide_y, bas_pyramide_z,      1,1,1,  1,1,
+ bas_pyramide_x,-bas_pyramide_y, bas_pyramide_z,      1,1,1,  1,0,
+-bas_pyramide_x,-bas_pyramide_y, bas_pyramide_z,      1,1,1,  1,1,
 
--2,-2,-1,1, 1, 1,  1,  1,
--2,2,-1,1, 1, 1,  1,  0,
-2,2,-1,1, 1, 1,  1,  1,
-2,-2,-1,1, 1, 1,  1,  0,
+-etage_1_x,-etage_1_y, etage_1_z,                     1,1,1,  1,0
+-etage_1_x, etage_1_y, etage_1_z,                     1,1,1,  1,1   
+ etage_1_x, etage_1_y, etage_1_z,                     1,1,1,  1,0
+ etage_1_x,-etage_1_y, etage_1_z,                     1,1,1,  1,1
 
-1,-1,-2,1, 1, 1,  1,  1,
--1,-1,-2,1, 1, 1,  1,  0,
--1,1,-2,1, 1, 1,  1,  1,
-1,1,-2,1, 1, 1,  1,  0,
+ etage_2_x ,-etage_2_y , etage_2_z,                   1,1,1,  1,0
+-etage_2_x ,-etage_2_y , etage_2_z,                   1,1,1,  1,1
+-etage_2_x , etage_2_y , etage_2_z,                   1,1,1,  1,0
+ etage_2_x , etage_2_y , etage_2_z,                   1,1,1,  1,1
 
-2,2,-3,1, 1, 1,  1,  1,
-2,-2,-3,1, 1, 1,  1,  0,
--2,-2,-3,1, 1, 1,  1,  1,
--2,2,-3,1, 1, 1,  1,  0,
-
+ etage_3_x, etage_3_y, etage_3_z,                     1,1,1,  1,0
+ etage_3_x,-etage_3_y, etage_3_z,                     1,1,1,  1,1
+-etage_3_x,-etage_3_y, etage_3_z,                     1,1,1,  1,0
+-etage_3_x, etage_3_y, etage_3_z,                     1,1,1,  1,1
 
 };
 

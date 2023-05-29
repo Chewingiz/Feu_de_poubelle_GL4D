@@ -212,6 +212,20 @@ GLfloat data[] = {
 
 }
 /*!\brief Cette fonction dessine dans le contexte OpenGL actif. */
+
+
+
+float randomFloat(float a, float b) {
+    // Initialisation du générateur de nombres aléatoires
+    //srand(time(NULL));
+
+    // Calcul de la plage et ajout du décalage
+    float range = b - a;
+    float random = ((float)rand() / RAND_MAX) * range + a;
+
+    return random;
+}
+
 static void draw(void) {
 
   /* une variable d'angle, maintenant elle passe ne degrés */
@@ -243,6 +257,7 @@ static void draw(void) {
    * modèle. Soit composer la matrice courante avec une rotation
    * "angle" autour de l'axe y (0, 1, 0) */
   gl4duRotatef(angle, 0, 1, 0);
+  gl4duRotatef( -90, 1, 0, 0);
   /* on incrémente angle d'un 1/60 de 1/4 de tour soit (360° x 1/60). Tester
    * l'application en activant/désactivant la synchronisation
    * verticale de votre carte graphique. Que se passe-t-il ? Trouver
@@ -253,11 +268,11 @@ static void draw(void) {
   gl4duSendMatrices();
   
   
-  GLfloat hauteur_pointe = 1;
-  GLfloat bas_pyramide_x = 1, bas_pyramide_y = 1, bas_pyramide_z = 0;
-  GLfloat etage_1_x = 2, etage_1_y = 2, etage_1_z = -1;
-  GLfloat etage_2_x = 1, etage_2_y = 1, etage_2_z = -2;
-  GLfloat etage_3_x = 2, etage_3_y = 2, etage_3_z = -3;
+  GLfloat hauteur_pointe = 1 ;
+  GLfloat bas_pyramide_x = 1+ randomFloat(-0.5, 0.5), bas_pyramide_y = 1+ randomFloat(-0.5, 0.5), bas_pyramide_z = 0;
+  GLfloat etage_1_x = 2 + randomFloat(-0.5, 0.5), etage_1_y = 2 + randomFloat(-0.5, 0.5), etage_1_z = -1;
+  GLfloat etage_2_x = 2.5 + randomFloat(-0.5, 0.5), etage_2_y = 2.5 + randomFloat(-0.5, 0.5), etage_2_z = -2;
+  GLfloat etage_3_x = 2 , etage_3_y = 2 , etage_3_z = -3;
   
   
   GLfloat updatedData[] = {

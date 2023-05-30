@@ -20,9 +20,10 @@ static void quit(void);
 /*!\brief largeur et hauteur de la fenêtre */
 static int _wW = 800, _wH = 600;
 /*!\brief identifiant du Vertex Array Object */
-static GLuint _vao = 0;
+static GLuint _vao[2] ;
 /*!\brief identifiant des Vertex Buffer Objects */
 static GLuint _buffer[2] = { 0 };
+static GLuint _bufferf[2] = { 0 };
 /*!\brief identifiant du GLSL program */
 static GLuint _pId = 0;
 /*!\brief identifiant d'une texture */
@@ -48,6 +49,7 @@ static void init(void) {
    * VBO ELEMENT_ARRAY_BUFFER */
    
 
+/*Poubelle*/
 GLuint idata[] = {
 0, 1, 2,
 0, 2, 3,
@@ -101,51 +103,150 @@ GLuint idata[] = {
 14,21,17,
 
 
-/*
-5,6,1,
-5,1,4,
-5,4,3,
-5,3,8,
-7,2,3,
-7,3,8,
-6,2,7,
-6,1,9*/
-
 };
 
 
 /* données-sommets envoyées dans le VBO ARRAY_BUFFER */
-GLfloat data[] = {
-0,0,1, 1, 1, 1,  1,  1,
 
--1,1,0,1, 1, 1,  1,  0,
-1,1,0,1, 1, 1,  1,  1,
-1,-1,0,1, 1, 1,  1,  0,
--1,-1,0,1, 1, 1,  1,  1,
+  GLfloat hauteur_pointe = 0;
+  GLfloat etage_3_x       = 0 ,                               etage_3_y       = 0 ,                               etage_3_z        = -3;
+  GLfloat bas_pyramide_x  = 1  ,     bas_pyramide_y  = 1 ,                                                       bas_pyramide_z   = 0;
+  GLfloat etage_1_x       = 1.3,     etage_1_y       = 1.3,      etage_1_z        = -1;
+  GLfloat etage_2_x       = 1 ,     etage_2_y       = 1,        etage_2_z        = -2;
+  GLfloat noeud = 0.5;
 
--2,-2,-1,1, 1, 1,  1,  1,
--2,2,-1,1, 1, 1,  1,  0,
-2,2,-1,1, 1, 1,  1,  1,
-2,-2,-1,1, 1, 1,  1,  0,
+  
+  
+  GLfloat data[] = {
+0,0,hauteur_pointe,                                   1,1,1,  1,0,
 
-1,-1,-2,1, 1, 1,  1,  1,
--1,-1,-2,1, 1, 1,  1,  0,
--1,1,-2,1, 1, 1,  1,  1,
-1,1,-2,1, 1, 1,  1,  0,
+-bas_pyramide_x, bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
+ bas_pyramide_x, bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
+ bas_pyramide_x,-bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
+-bas_pyramide_x,-bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
 
-2,2,-3,1, 1, 1,  1,  1,
-2,-2,-3,1, 1, 1,  1,  0,
--2,-2,-3,1, 1, 1,  1,  1,
--2,2,-3,1, 1, 1,  1,  0,
+-etage_1_x ,-etage_1_y , etage_1_z,                     0,0,0,  1,0,
+-etage_1_x , etage_1_y , etage_1_z,                     0,0,0,  1,0,   
+ etage_1_x , etage_1_y , etage_1_z,                     0,0,0,  1,0,
+ etage_1_x ,-etage_1_y , etage_1_z,                     0,0,0,  1,0,
+
+ etage_2_x ,-etage_2_y , etage_2_z,                     0,0,0,  1,0,
+-etage_2_x ,-etage_2_y , etage_2_z,                     0,0,0,  1,0,
+-etage_2_x , etage_2_y , etage_2_z,                     0,0,0,  1,0,
+ etage_2_x , etage_2_y , etage_2_z,                     0,0,0,  1,0,
+
+ etage_3_x, etage_3_y, etage_3_z,                     0,0,0,  1,0,
+ etage_3_x,-etage_3_y, etage_3_z,                     0,0,0,  1,0,
+-etage_3_x,-etage_3_y, etage_3_z,                     0,0,0,  1,0,
+-etage_3_x, etage_3_y, etage_3_z,                     0,0,0,  1,0,
+
+ noeud , noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
+ noeud ,-noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
+-noeud ,-noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
+-noeud , noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
+-noeud , noeud -0.2,  etage_3_z  - 0.5,                     0,0,0,  1,0,
+
+};
+
+
+
+
+  /*data feu*/
+
+
+GLuint idataf[] = {
+0, 1, 2,
+0, 2, 3,
+0, 3, 4,
+0, 4, 1,
+
+/*1*/
+1,2,7,
+7,6,1,
+
+1,6,4,
+4,6,5,
+
+5,4,3,
+3,5,8,
+
+8,7,2,
+2,3,8,
+
+/*2*/
+8,5,10,
+10,9,8,
+
+8,9,7,
+7,9,12,
+
+12,7,6,
+6,12,11,
+
+11,10,5,
+5,6,11,
+
+/*3*/
+
+11, 12, 13,
+13, 16, 11,
+
+11, 16, 10,
+10, 16, 15,
+
+15, 10, 9,
+9,15,14,
+
+14, 13, 12,
+12, 9, 14,
+
+14, 17, 18,
+18,19,14,
+14,19,20,
+20,21,14,
+14,21,17,
 
 
 };
+  GLfloat dataf[] = {
+0,0,hauteur_pointe,                                   1,1,1,  1,0,
+
+-bas_pyramide_x, bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
+ bas_pyramide_x, bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
+ bas_pyramide_x,-bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
+-bas_pyramide_x,-bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
+
+-etage_1_x ,-etage_1_y , etage_1_z,                     0,0,0,  1,0,
+-etage_1_x , etage_1_y , etage_1_z,                     0,0,0,  1,0,   
+ etage_1_x , etage_1_y , etage_1_z+10,                     0,0,0,  1,0,
+ etage_1_x ,-etage_1_y , etage_1_z,                     0,0,0,  1,0,
+
+ etage_2_x ,-etage_2_y , etage_2_z,                     0,0,0,  1,0,
+-etage_2_x ,-etage_2_y , etage_2_z,                     0,0,0,  1,0,
+-etage_2_x , etage_2_y , etage_2_z,                     0,0,0,  1,0,
+ etage_2_x , etage_2_y , etage_2_z,                     0,0,0,  1,0,
+
+ etage_3_x, etage_3_y, etage_3_z,                     0,0,0,  1,0,
+ etage_3_x,-etage_3_y, etage_3_z,                     0,0,0,  1,0,
+-etage_3_x,-etage_3_y, etage_3_z,                     0,0,0,  1,0,
+-etage_3_x, etage_3_y, etage_3_z,                     0,0,0,  1,0,
+
+ noeud , noeud ,      etage_3_z  - 0.5,                     1,0,0,  1,0,
+ noeud ,-noeud ,      etage_3_z  - 0.5,                     1,0,0,  1,0,
+-noeud ,-noeud ,      etage_3_z  - 0.5,                     1,0,0,  1,0,
+-noeud , noeud ,      etage_3_z  - 0.5,                     1,0,0,  1,0,
+-noeud , noeud -0.2,  etage_3_z  - 0.5,                     1,0,0,  1,0,
+
+};
+
   const GLuint B = RGB(255, 255, 255), N = 0;
   GLuint tex[] = { B, N, N, B };
   /* Génération d'un identifiant de VAO */
-  glGenVertexArrays(1, &_vao);
+  glGenVertexArrays(2, _vao);
+
+
   /* Lier le VAO-machine-GL à l'identifiant VAO généré */
-  glBindVertexArray(_vao);
+  glBindVertexArray(_vao[0]);
   /* Activation des 3 premiers indices d'attribut de sommet */
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
@@ -165,10 +266,39 @@ GLfloat data[] = {
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _buffer[1]);
   /* Transfert des données d'indices VBO-ELEMENT_ARRAY_BUFFER */
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idata, idata, GL_STATIC_DRAW);
+
+  /*feu*/
+
+    /* Lier le VAO-machine-GL à l'identifiant VAO généré */
+  glBindVertexArray(_vao[1]);
+  /* Activation des 3 premiers indices d'attribut de sommet */
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+  glEnableVertexAttribArray(2);
+  /* Génération de deux identifiants de VBO un pour ARRAY_BUFFER, un
+   * pour ELEMENT_ARRAY_BUFFER */
+  glGenBuffers(2, _bufferf);
+  /* Lier le VBO-ARRAY_BUFFER à l'identifiant du premier VBO généré */
+  glBindBuffer(GL_ARRAY_BUFFER, _bufferf[0]);
+  /* Transfert des données VBO-ARRAY_BUFFER */
+  glBufferData(GL_ARRAY_BUFFER, sizeof dataf, dataf, GL_STATIC_DRAW);
+  /* Paramétrage 3 premiers indices d'attribut de sommet */
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof *dataf, (const void *)0);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof *dataf, (const void *)(3 * sizeof *dataf));
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof *dataf, (const void *)(6 * sizeof *dataf));
+  /* Lier le VBO-ELEMENT_ARRAY_BUFFER à l'identifiant du second VBO généré */
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _bufferf[1]);
+  /* Transfert des données d'indices VBO-ELEMENT_ARRAY_BUFFER */
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idataf, idataf, GL_STATIC_DRAW);
+
+
+
   /* dé-lier le VAO puis les VAO */
   glBindVertexArray(0);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
   /* générer un identifiant de texture */
   glGenTextures(1, &_texId);
   /* lier l'identifiant de texture comme texture 2D (1D ou 3D
@@ -243,6 +373,7 @@ static void draw(void) {
    * l'activation du test de profondeur dans la fonction init via
    * l'appel glEnable(GL_DEPTH_TEST). */
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glBindBuffer(GL_ARRAY_BUFFER, _bufferf[0]);
   /* activation du programme _pId */
   glUseProgram(_pId);
   /* lier (mettre en avant ou "courante") la matrice vue créée dans
@@ -273,57 +404,7 @@ static void draw(void) {
    * GL4Dummies */
   gl4duSendMatrices();
   
-static int t = 0;
-t++;
-if (t%10 == 9 ){
-  GLfloat hauteur_pointe = 0;
-  GLfloat etage_3_x       = 0 ,                               etage_3_y       = 0 ,                               etage_3_z        = -3;
-  GLfloat decal =  hauteur_pointe - etage_3_z  ;
-  
 
-  GLfloat bas_pyramide_x  = 1  ,     bas_pyramide_y  = 1 ,                                                       bas_pyramide_z   = 0;
-  GLfloat etage_1_x       = 1.3,     etage_1_y       = 1.3,      etage_1_z        = -1;
-  GLfloat etage_2_x       = 1 ,     etage_2_y       = 1,        etage_2_z        = -2;
-  GLfloat noeud = 0.5;
-
-  
-  
-  GLfloat updatedData[] = {
-0,0,hauteur_pointe,                                   1,1,1,  1,0,
-
--bas_pyramide_x, bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
- bas_pyramide_x, bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
- bas_pyramide_x,-bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
--bas_pyramide_x,-bas_pyramide_y , bas_pyramide_z,      0,0,0,  1,0,
-
--etage_1_x ,-etage_1_y , etage_1_z,                     0,0,0,  1,0,
--etage_1_x , etage_1_y , etage_1_z,                     0,0,0,  1,0,   
- etage_1_x , etage_1_y , etage_1_z,                     0,0,0,  1,0,
- etage_1_x ,-etage_1_y , etage_1_z,                     0,0,0,  1,0,
-
- etage_2_x ,-etage_2_y , etage_2_z,                     0,0,0,  1,0,
--etage_2_x ,-etage_2_y , etage_2_z,                     0,0,0,  1,0,
--etage_2_x , etage_2_y , etage_2_z,                     0,0,0,  1,0,
- etage_2_x , etage_2_y , etage_2_z,                     0,0,0,  1,0,
-
- etage_3_x, etage_3_y, etage_3_z,                     0,0,0,  1,0,
- etage_3_x,-etage_3_y, etage_3_z,                     0,0,0,  1,0,
--etage_3_x,-etage_3_y, etage_3_z,                     0,0,0,  1,0,
--etage_3_x, etage_3_y, etage_3_z,                     0,0,0,  1,0,
-
- noeud , noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
- noeud ,-noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
--noeud ,-noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
--noeud , noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
--noeud , noeud -0.2,  etage_3_z  - 0.5,                     0,0,0,  1,0,
-
-};
-
-
-  glBindBuffer(GL_ARRAY_BUFFER, _buffer[0]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(updatedData), updatedData, GL_STATIC_DRAW);
-
-}
   /* activer l'étage de textures 0, plusieurs étages sont disponibles,
    * nous pouvons lier une texture par type et par étage */
   glActiveTexture(GL_TEXTURE0);
@@ -337,13 +418,23 @@ if (t%10 == 9 ){
    * textures (plus efficace à faire dans le vertex shader */
   glUniform1i(glGetUniformLocation(_pId, "inv"), 1); 
   /* Lier le VAO-machine-GL à l'identifiant VAO _vao */
-  glBindVertexArray(_vao);
+  glBindVertexArray(_vao[0]);
   /* Dessiner le VAO comme une bande d'un triangle avec 4 sommets
    * commençant à 0
    *
    * Attention ! Maintenant nous dessinons avec DrawElement qui
    * utilise les indices des sommets poassés pour mailler */
   glDrawElements(GL_TRIANGLE_STRIP, 36 + 24+ 24 +15, GL_UNSIGNED_INT, (const GLvoid *)0);
+
+
+  gl4duTranslatef(0, 0, 3);
+  gl4duSendMatrices();
+
+  glBindVertexArray(_vao[1]);
+
+  glDrawElements(GL_TRIANGLE_STRIP, 36 + 24+ 24 +15, GL_UNSIGNED_INT, (const GLvoid *)0);
+
+
   /* dé-lier le VAO */
   glBindVertexArray(0);
   /* désactiver le programme shader */
@@ -356,11 +447,13 @@ static void quit(void) {
   if(_texId)
     glDeleteTextures(1, &_texId);
   /* suppression du VAO _vao en GPU */
-  if(_vao)
-    glDeleteVertexArrays(1, &_vao);
+  if(_vao[1])
+    glDeleteVertexArrays(2, _vao);
   /* suppression du VBO _buffer en GPU, maintenant il y en a deux */
   if(_buffer[0])
     glDeleteBuffers(2, _buffer);
+  if(_bufferf[0])
+    glDeleteBuffers(2, _bufferf);
   /* nettoyage des éléments utilisés par la bibliothèque GL4Dummies */
   gl4duClean(GL4DU_ALL);
 }

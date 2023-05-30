@@ -48,6 +48,10 @@ static void init(void) {
   /* indices pour réaliser le maillage des géométrie, envoyés dans le
    * VBO ELEMENT_ARRAY_BUFFER */
    
+glEnable(GL_BLEND);
+
+// Étape 3 : Définir la fonction de mélange
+glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 /*Poubelle*/
 GLuint idata[] = {
@@ -152,62 +156,6 @@ GLuint idata[] = {
 
 
   /*data feu*/
-
-
-GLuint idataf[] = {
-0, 1, 2,
-0, 2, 3,
-0, 3, 4,
-0, 4, 1,
-
-/*1*/
-1,2,7,
-7,6,1,
-
-1,6,4,
-4,6,5,
-
-5,4,3,
-3,5,8,
-
-8,7,2,
-2,3,8,
-
-/*2*/
-8,5,10,
-10,9,8,
-
-8,9,7,
-7,9,12,
-
-12,7,6,
-6,12,11,
-
-11,10,5,
-5,6,11,
-
-/*3*/
-
-11, 12, 13,
-13, 16, 11,
-
-11, 16, 10,
-10, 16, 15,
-
-15, 10, 9,
-9,15,14,
-
-14, 13, 12,
-12, 9, 14,
-
-14, 17, 18,
-18,19,14,
-14,19,20,
-20,21,14,
-14,21,17,
-
-
-};
   GLfloat dataf[] = {
 0,0,hauteur_pointe,                                   1,1,1,  1,0,
 
@@ -218,7 +166,7 @@ GLuint idataf[] = {
 
 -etage_1_x ,-etage_1_y , etage_1_z,                     0,0,0,  1,0,
 -etage_1_x , etage_1_y , etage_1_z,                     0,0,0,  1,0,   
- etage_1_x , etage_1_y , etage_1_z+10,                     0,0,0,  1,0,
+ etage_1_x , etage_1_y , etage_1_z,                     0,0,0,  1,0,
  etage_1_x ,-etage_1_y , etage_1_z,                     0,0,0,  1,0,
 
  etage_2_x ,-etage_2_y , etage_2_z,                     0,0,0,  1,0,
@@ -231,11 +179,11 @@ GLuint idataf[] = {
 -etage_3_x,-etage_3_y, etage_3_z,                     0,0,0,  1,0,
 -etage_3_x, etage_3_y, etage_3_z,                     0,0,0,  1,0,
 
- noeud , noeud ,      etage_3_z  - 0.5,                     1,0,0,  1,0,
- noeud ,-noeud ,      etage_3_z  - 0.5,                     1,0,0,  1,0,
--noeud ,-noeud ,      etage_3_z  - 0.5,                     1,0,0,  1,0,
--noeud , noeud ,      etage_3_z  - 0.5,                     1,0,0,  1,0,
--noeud , noeud -0.2,  etage_3_z  - 0.5,                     1,0,0,  1,0,
+ noeud , noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
+ noeud ,-noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
+-noeud ,-noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
+-noeud , noeud ,      etage_3_z  - 0.5,                     0,0,0,  1,0,
+-noeud , noeud -0.2,  etage_3_z  - 0.5,                     0,0,0,  1,0,
 
 };
 
@@ -289,7 +237,7 @@ GLuint idataf[] = {
   /* Lier le VBO-ELEMENT_ARRAY_BUFFER à l'identifiant du second VBO généré */
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _bufferf[1]);
   /* Transfert des données d'indices VBO-ELEMENT_ARRAY_BUFFER */
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idataf, idataf, GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof idata, idata, GL_STATIC_DRAW);
 
 
 
@@ -344,6 +292,7 @@ GLuint idataf[] = {
   gl4duFrustumf(-1, 1, -1, 1, 2, 100);
   /* dans quelle partie de l'écran on effectue le rendu */
   glViewport(0, 0, _wW, _wH);
+
   srand(time(NULL));
 
 }
@@ -394,7 +343,12 @@ static void draw(void) {
    * modèle. Soit composer la matrice courante avec une rotation
    * "angle" autour de l'axe y (0, 1, 0) */
   gl4duRotatef(angle, 0, 1, 0);
+  //gl4duRotatef( 180, 1, 0, 0);
+
+ 
   gl4duRotatef( 90, 1, 0, 0);
+   gl4duTranslatef(0, 0, 4);
+
   /* on incrémente angle d'un 1/60 de 1/4 de tour soit (360° x 1/60). Tester
    * l'application en activant/désactivant la synchronisation
    * verticale de votre carte graphique. Que se passe-t-il ? Trouver
@@ -418,22 +372,91 @@ static void draw(void) {
    * textures (plus efficace à faire dans le vertex shader */
   glUniform1i(glGetUniformLocation(_pId, "inv"), 1); 
   /* Lier le VAO-machine-GL à l'identifiant VAO _vao */
+
+
+
+
+glBindVertexArray(_vao[1]);
+
+  static int t = 0;
+t++;
+if (t%10 == 9 ){
+  GLfloat hauteur_pointe = 1 + randomFloat(-0.5, 1.);
+  GLfloat etage_3_x       = 0.5 ,                               etage_3_y       = 0.5 ,                               etage_3_z        = -3;
+  GLfloat decal =  hauteur_pointe - etage_3_z  ;
+  
+
+  GLfloat bas_pyramide_x  = 0.5  ,     bas_pyramide_y  = 0.5  ,                                                       bas_pyramide_z   = 0;
+  GLfloat etage_1_x       = 1   + randomFloat(-0.25, 0.25),     etage_1_y       = 1   + randomFloat(-0.25, 0.5),      etage_1_z        = -1;
+  GLfloat etage_2_x       = 1. + randomFloat(-0.25, 0.25),     etage_2_y       = 1. + randomFloat(-0.25, 0.5),        etage_2_z        = -2;
+
+  
+  
+  GLfloat updatedData[] = {
+0,0,hauteur_pointe,                                   1,1,1,  1,0,
+
+-bas_pyramide_x + randomFloat(-0.25, 0.25), bas_pyramide_y + randomFloat(-0.25, 0.25), bas_pyramide_z,      1,1,0,  1,0,
+ bas_pyramide_x + randomFloat(-0.25, 0.25), bas_pyramide_y + randomFloat(-0.25, 0.25), bas_pyramide_z,      1,1,0,  1,0,
+ bas_pyramide_x + randomFloat(-0.25, 0.25),-bas_pyramide_y + randomFloat(-0.25, 0.25), bas_pyramide_z,      1,1,0,  1,0,
+-bas_pyramide_x + randomFloat(-0.25, 0.25),-bas_pyramide_y + randomFloat(-0.25, 0.25), bas_pyramide_z,      1,1,0,  1,0,
+
+-etage_1_x + randomFloat(-0.25, 0.25),-etage_1_y + randomFloat(-0.25, 0.25), etage_1_z,                     1,0.5,0,  1,0,
+-etage_1_x + randomFloat(-0.25, 0.25), etage_1_y + randomFloat(-0.25, 0.25), etage_1_z,                     1,0.5,0,  1,0,   
+ etage_1_x + randomFloat(-0.25, 0.25), etage_1_y + randomFloat(-0.25, 0.25), etage_1_z,                     1,0.5,0,  1,0,
+ etage_1_x + randomFloat(-0.25, 0.25),-etage_1_y + randomFloat(-0.25, 0.25), etage_1_z,                     1,0.5,0,  1,0,
+
+ etage_2_x + randomFloat(-0.25, 0.25),-etage_2_y + randomFloat(-0.25, 0.25), etage_2_z,                     1,0,0,  1,0,
+-etage_2_x + randomFloat(-0.25, 0.25),-etage_2_y + randomFloat(-0.25, 0.25), etage_2_z,                     1,0,0,  1,0,
+-etage_2_x + randomFloat(-0.25, 0.25), etage_2_y + randomFloat(-0.25, 0.25), etage_2_z,                     1,0,0,  1,0,
+ etage_2_x + randomFloat(-0.25, 0.25), etage_2_y + randomFloat(-0.25, 0.25), etage_2_z,                     1,0,0,  1,0,
+
+ etage_3_x, etage_3_y, etage_3_z,                     1,0,0,  1,0,
+ etage_3_x,-etage_3_y, etage_3_z,                     1,0,0,  1,0,
+-etage_3_x,-etage_3_y, etage_3_z,                     1,0,0,  1,0,
+-etage_3_x, etage_3_y, etage_3_z,                     1,0,0,  1,0,
+
+};
+
+
+  glBindBuffer(GL_ARRAY_BUFFER, _buffer[0]);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(updatedData), updatedData, GL_STATIC_DRAW);
+
+}
+
+
+  glUniform1i(glGetUniformLocation(_pId, "isTrans"), 0); 
+  glDrawElements(GL_TRIANGLE_STRIP, 36 + 24+ 24 +15, GL_UNSIGNED_INT, (const GLvoid *)0);
+
+
+
+
+
+  //gl4duLoadIdentityf();
+  gl4duRotatef( 180, 1, 0, 0);
+  gl4duTranslatef(0, 0, 4);
+  gl4duSendMatrices();
+
+
+
   glBindVertexArray(_vao[0]);
   /* Dessiner le VAO comme une bande d'un triangle avec 4 sommets
    * commençant à 0
    *
    * Attention ! Maintenant nous dessinons avec DrawElement qui
    * utilise les indices des sommets poassés pour mailler */
-  glDrawElements(GL_TRIANGLE_STRIP, 36 + 24+ 24 +15, GL_UNSIGNED_INT, (const GLvoid *)0);
 
 
-  gl4duTranslatef(0, 0, 3);
-  gl4duSendMatrices();
 
-  glBindVertexArray(_vao[1]);
 
-  glDrawElements(GL_TRIANGLE_STRIP, 36 + 24+ 24 +15, GL_UNSIGNED_INT, (const GLvoid *)0);
 
+
+
+  glUniform1i(glGetUniformLocation(_pId, "isTrans"), 1); 
+  glDrawElements(GL_TRIANGLE_STRIP, 36 + 24+ 24 , GL_UNSIGNED_INT, (const GLvoid *)0);
+
+
+
+  
 
   /* dé-lier le VAO */
   glBindVertexArray(0);
@@ -454,6 +477,9 @@ static void quit(void) {
     glDeleteBuffers(2, _buffer);
   if(_bufferf[0])
     glDeleteBuffers(2, _bufferf);
+  // Désactiver le blending
+glDisable(GL_BLEND);
+
   /* nettoyage des éléments utilisés par la bibliothèque GL4Dummies */
   gl4duClean(GL4DU_ALL);
 }

@@ -17,7 +17,7 @@ CPPFLAGS = -I.
 LDFLAGS = -lm
 # définition des fichiers et dossiers
 PACKNAME = sc_02_01
-PROGNAME = simpleTexture
+PROGNAME = Feu
 VERSION = 1.1
 distdir = $(PACKNAME)_$(PROGNAME)-$(VERSION)
 HEADERS = 

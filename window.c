@@ -27,7 +27,7 @@ static GLuint _texId = 0;
  * d'affichage.
  */
 int main(int argc, char ** argv) {
-  if(!gl4duwCreateWindow(argc, argv, "GL4Dummies", 20, 20, 
+  if(!gl4duwCreateWindow(argc, argv, "GL4Dummies Feu", 20, 20, 
 			 _wW, _wH, GL4DW_RESIZABLE | GL4DW_SHOWN))
     return 1;
   init();

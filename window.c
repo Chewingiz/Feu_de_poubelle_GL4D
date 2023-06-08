@@ -1,10 +1,3 @@
-/*!\file window.c
- *
- * \brief introduction aux textures (plus ce qui a été vu avant) 
- * \author Farès BELHADJ, amsi@ai.univ-paris8.fr 
- * \date February 15 2018
- */
-
 #include <GL4D/gl4du.h>
 #include <GL4D/gl4dp.h>
 #include <GL4D/gl4duw_SDL2.h>
@@ -45,12 +38,7 @@ int main(int argc, char ** argv) {
 }
 
 static void init(void) {
-  /* indices pour réaliser le maillage des géométrie, envoyés dans le
-   * VBO ELEMENT_ARRAY_BUFFER */
-   
 glEnable(GL_BLEND);
-
-// Étape 3 : Définir la fonction de mélange
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 /*Poubelle*/
